@@ -11,23 +11,26 @@ def proj_pos_simplex(v, r=1):
     #  if  already on the simplex
     if v.sum() == r and np.alltrue(v >= 0):
         return v
-
     mu = np.sort(v)[::-1]
-    rho = np.nonzero(mu * np.range(1, n+1) > (np.cumsum(mu) - r))[0][-1]
-    theta = float(cssv[rho] - r) / rho
+    ss = np.cumsum(mu)
+
+    rho = np.nonzero(mu * np.arange(1, n+1) > ( ss - r))[0][-1]
+    theta = float(ss[rho] - r) / rho
     w = (v - theta).clip(min=0)
     return w
 
 """ Compute the Euclidean projection on a L1-ball"""
 r = 1 # radius of the ball, should be +ve
-v = np.random.rand(25) ###   vector to be projected
+v = np.random.rand(150) ###   vector to be projected
 n, = v.shape
 mu = np.abs(v)
+print("Original vector(v): ",v)
 # check if v is already a solution
 if mu.sum() <= r:
     w = v
-    break
+    print("Projected vector is :", w)
+    exit(1)
 w = proj_pos_simplex(mu, r=r)
 # Just add the sign of the corresponding element of v to each element of w
 w*= np.sign(v)
-print(w)
+print("Projected vector is :", w)

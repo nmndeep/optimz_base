@@ -24,13 +24,14 @@ r = 1 # radius of the ball, should be +ve
 v = np.random.rand(150) ###   vector to be projected
 n, = v.shape
 mu = np.abs(v)
-print("Original vector(v): ",v)
 # check if v is already a solution
 if mu.sum() <= r:
     w = v
     print("Projected vector is :", w)
     exit(1)
+    
 w = proj_pos_simplex(mu, r=r)
+
 # Just add the sign of the corresponding element of v to each element of w
 w*= np.sign(v)
 print("Projected vector is :", w)
